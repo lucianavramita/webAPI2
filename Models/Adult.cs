@@ -10,5 +10,6 @@ namespace webAPI2.Models
      public int Age { get; set; } = 0;
      public float Weight { get; set; } = 0;
     public char Sex { get; set; } = 'N';
+    public Job JobTitle { get; set; }
     }
 }
