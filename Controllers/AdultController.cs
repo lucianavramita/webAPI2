@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
-
-
-
+using webAPI2.Services.AdultService;
 
 namespace webAPI2.Controllers
 {
@@ -13,38 +11,32 @@ namespace webAPI2.Controllers
     [Route("[controller]")]
     public class AdultController : ControllerBase
     {
-        //private static Adult emptyAdult = new Adult();
-        //string text = System.IO.File.ReadAllText(@"adults.json");
+        private readonly IAdultService _adultService;
 
-        public static string text { get; set; } = System.IO.File.ReadAllText(@"adults.json");
-        public static List<Adult> adultList { get; set; } =JsonConvert.DeserializeObject<List<Adult>>(text);
-        
+        public AdultController(IAdultService adultService)
+        {
+            _adultService = adultService;
+        }
+
+
         [HttpGet]
         [Route("GetAll")]
-        public ActionResult<List<Adult>>Get()
+        public ActionResult<List<Adult>> Get()
         {
-            return Ok(adultList);
+            return Ok(_adultService.Get());
         }
 
         [HttpGet("{id}")]
 
-        public ActionResult<Adult>GetSingle(int id)
+        public ActionResult<Adult> GetSingle(int id)
         {
-            return Ok(adultList.First(a => a.Id == id));
+            return Ok(_adultService.GetSingle(id));
         }
 
         [HttpPost]
         public ActionResult<List<Adult>> AddAdult(Adult newAdult)
-        {  
-            adultList.Add(newAdult);
-            string json = JsonConvert.SerializeObject(adultList);
-            System.IO.File.WriteAllText(@"adults.json", json);
-            return Ok(adultList);
+        {
+            return Ok(_adultService.AddAdult(newAdult));
         }
-            // Console.WriteLine();
-            // foreach( Adult a in adultList )
-            // {
-            //     Console.WriteLine(a.FirstName);
-            // }
     }
 }

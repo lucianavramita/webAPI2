@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using webAPI2.Services.AdultService;
 
 namespace webAPI2
 {
@@ -32,6 +33,7 @@ namespace webAPI2
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "webAPI2", Version = "v1" });
             });
+            services.AddScoped<IAdultService, AdultService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
