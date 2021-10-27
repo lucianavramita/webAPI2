@@ -14,14 +14,15 @@ namespace webAPI2.Controllers
     public class AdultController : ControllerBase
     {
         //private static Adult emptyAdult = new Adult();
-        string text = System.IO.File.ReadAllText(@"adults.json");
+        //string text = System.IO.File.ReadAllText(@"adults.json");
+
+        public static string text { get; set; } = System.IO.File.ReadAllText(@"adults.json");
+        public static List<Adult> adultList { get; set; } =JsonConvert.DeserializeObject<List<Adult>>(text);
         
         [HttpGet]
         [Route("GetAll")]
         public ActionResult<List<Adult>>Get()
         {
-            List<Adult> adultList = new List<Adult>();
-            adultList = JsonConvert.DeserializeObject<List<Adult>>(text);
             return Ok(adultList);
         }
 
@@ -29,16 +30,12 @@ namespace webAPI2.Controllers
 
         public ActionResult<Adult>GetSingle(int id)
         {
-            List<Adult> adultList = new List<Adult>();
-            adultList = JsonConvert.DeserializeObject<List<Adult>>(text);
             return Ok(adultList.First(a => a.Id == id));
         }
 
         [HttpPost]
         public ActionResult<List<Adult>> AddAdult(Adult newAdult)
         {  
-            List<Adult> adultList = new List<Adult>();
-            adultList = JsonConvert.DeserializeObject<List<Adult>>(text);
             adultList.Add(newAdult);
             string json = JsonConvert.SerializeObject(adultList);
             System.IO.File.WriteAllText(@"adults.json", json);
